@@ -13,7 +13,7 @@ export const CURRICULUM_DATA = [
         subtitle: "(the physical device and why it's not 'a faster classical computer')",
         content: `A quantum computer is a specialized co-processor that stores and transforms information in qubits — quantum-mechanical states — exploiting superposition and entanglement to represent and manipulate information in ways classical bits fundamentally cannot. Key insight: it is not a faster classical computer that tries every answer at once for free. Classical bits are strictly 0 or 1; a qubit's advantage comes from engineered interference between possibilities.
 
-**Hardware Reality:** IBM devices use superconducting transmon qubits running in a dilution refrigerator at ~15 millikelvin. Transmon qubits rely on Josephson junctions—nonlinear inductors that make energy levels non-equidistant, allowing isolated addressing of |0⟩ and |1⟩ states.`,
+**Hardware Reality:** IBM devices use superconducting transmon qubits running in a dilution refrigerator at ~15 millikelvin. Transmon qubits rely on Josephson junctions—nonlinear inductors that make energy levels non-equidistant, allowing isolated addressing of $|0\\rangle$ and $|1\\rangle$ states.`,
         qiskitCode: `# Initialize a quantum circuit with 1 qubit
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector
@@ -29,8 +29,8 @@ print("Initial statevector:", psi.data)`,
         title: "What is a Qubit",
         subtitle: "(state vector, ket notation, normalization)",
         content: `A qubit is a state vector in a 2D complex vector space, written in ket notation:
-|ψ⟩ = α|0⟩ + β|1⟩, where α, β ∈ ℂ and |α|² + |β|² = 1.
-The state vector components α and β represent complex probability amplitudes. The normalization constraint |α|² + |β|² = 1 ensures the total outcome probability equals 1 upon measurement in the computational basis.`,
+$$|\\psi\\rangle = \\alpha|0\\rangle + \\beta|1\\rangle, \\qquad \\alpha,\\beta \\in \\mathbb{C}, \\qquad |\\alpha|^2 + |\\beta|^2 = 1$$
+The state vector components $\\alpha$ and $\\beta$ represent complex probability amplitudes. The normalization constraint $|\\alpha|^2 + |\\beta|^2 = 1$ ensures the total outcome probability equals 1 upon measurement in the computational basis.`,
         qiskitCode: `from qiskit.quantum_info import Statevector
 import numpy as np
 
@@ -46,7 +46,7 @@ print("Probabilities P(0), P(1):", psi.probabilities())`,
         subtitle: "(interference, not classical probability)",
         content: `Superposition is not a classical probability distribution over hidden deterministic states; a qubit in superposition genuinely carries both amplitudes simultaneously, along with their relative phase. 
 
-**Interference:** Quantum amplitudes are complex numbers and can cancel: 1/2 + (-1/2) = 0. Computational paths can destructively interfere to eliminate wrong answers, while paths to correct answers constructively reinforce. The Hadamard gate H prepares equal superpositions: H|0⟩ = (|0⟩ + |1⟩)/√2.`,
+**Interference:** Quantum amplitudes are complex numbers and can cancel: $\\frac{1}{2} + \\left(-\\frac{1}{2}\\right) = 0$. Computational paths can destructively interfere to eliminate wrong answers, while paths to correct answers constructively reinforce. The Hadamard gate H prepares equal superpositions: $H|0\\rangle = \\frac{|0\\rangle + |1\\rangle}{\\sqrt{2}}$.`,
         qiskitCode: `from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector
 
@@ -63,8 +63,8 @@ print("Outcome Probabilities:", psi.probabilities())`,
         title: "Bloch Sphere",
         subtitle: "(the geometric picture — and where it stops applying)",
         content: `Any single-qubit pure state can be visualized as a point on the surface of a 3D unit sphere:
-|ψ⟩ = cos(θ/2)|0⟩ + e^(iφ)sin(θ/2)|1⟩.
-North pole (θ=0) represents |0⟩, South pole (θ=π) represents |1⟩, and the equator represents equal superposition states with relative phase φ. Single-qubit unitary operations correspond to 3D rotations of this point on the sphere.
+$$|\\psi\\rangle = \\cos\\!\\left(\\frac{\\theta}{2}\\right)|0\\rangle + e^{i\\phi}\\sin\\!\\left(\\frac{\\theta}{2}\\right)|1\\rangle, \\qquad \\theta \\in [0,\\pi],\\ \\phi \\in [0, 2\\pi)$$
+North pole ($\\theta=0$) represents $|0\\rangle$, South pole ($\\theta=\\pi$) represents $|1\\rangle$, and the equator represents equal superposition states with relative phase $\\phi$. Single-qubit unitary operations correspond to 3D rotations of this point on the sphere.
 
 *Limit:* The Bloch sphere representation only applies to single-qubit pure states. Multi-qubit entangled states cannot be decomposed into individual points on separate Bloch spheres.`,
         qiskitCode: `from qiskit import QuantumCircuit
@@ -82,7 +82,7 @@ print("Bloch Statevector:", sv.data)`,
         id: "measurement-and-collapse",
         title: "Measurement and Collapse",
         subtitle: "(the Born rule, why quantum programs are inherently probabilistic)",
-        content: `Measuring a qubit state α|0⟩ + β|1⟩ in the Z computational basis yields result 0 with probability |α|² and result 1 with probability |β|² (Born rule). Measurement irreversibly collapses the superposition into the measured basis state.
+        content: `Measuring a qubit state $\\alpha|0\\rangle + \\beta|1\\rangle$ in the Z computational basis yields result 0 with probability $|\\alpha|^2$ and result 1 with probability $|\\beta|^2$ (Born rule). Measurement irreversibly collapses the superposition into the measured basis state.
 
 Because a single measurement returns only 1 classical bit, quantum algorithms run many trials ("shots") to construct probability distributions or expectation values.`,
         qiskitCode: `from qiskit import QuantumCircuit
@@ -128,7 +128,7 @@ print(qc.draw(output="text"))`,
         subtitle: "(Sampler vs Estimator vs Executor, PUBs, local vs Runtime)",
         content: `Qiskit 1.x organizes execution around Primitives:
 - **Sampler (SamplerV2):** Calculates quasi-probability distributions of bitstrings from measurement outputs.
-- **Estimator (EstimatorV2):** Calculates expectation values of observable operators ⟨ψ|H|ψ⟩.
+- **Estimator (EstimatorV2):** Calculates expectation values of observable operators $\\langle\\psi|H|\\psi\\rangle$.
 - **PUBs (Primitive Unified Blocs):** Standardized input tuples \`(circuit, observables, parameter_values)\` passed to Primitive execution methods.`,
         qiskitCode: `from qiskit.circuit import QuantumCircuit
 from qiskit.quantum_info import SparsePauliOp
@@ -168,7 +168,7 @@ print("Bound circuit depth:", bound_qc.depth())`,
         subtitle: "(exact amplitudes vs sampled counts, fake backends)",
         content: `Classical simulation of quantum circuits takes two main forms:
 1. **Statevector Simulation:** Tracks exact $2^N$ complex amplitudes without sampling noise.
-2. **Shot-based Simulation:** Emulates real hardware by measuring a statevector $M$ times to yield discrete count frequencies subject to shot noise ($1/\sqrt{M}$).`,
+2. **Shot-based Simulation:** Emulates real hardware by measuring a statevector $M$ times to yield discrete count frequencies subject to shot noise ($1/\\sqrt{M}$).`,
         qiskitCode: `from qiskit import QuantumCircuit
 from qiskit_aer import AerSimulator
 
@@ -196,11 +196,7 @@ print("Sampled Counts:", counts)`,
         title: "Pauli Operators",
         subtitle: "(X, Y, Z, identity, matrix representations, commutation rules)",
         content: `The 2×2 complex Hermitian and Unitary Pauli matrices form a complete basis for all 1-qubit operators:
-- **I:** [[1, 0], [0, 1]]
-- **X:** [[0, 1], [1, 0]] (Bit-flip)
-- **Y:** [[0, -i], [i, 0]] (Bit + Phase-flip)
-- **Z:** [[1, 0], [0, -1]] (Phase-flip)
-
+$$I = \\begin{pmatrix}1 & 0\\\\ 0 & 1\\end{pmatrix}, \\quad X = \\begin{pmatrix}0 & 1\\\\ 1 & 0\\end{pmatrix}, \\quad Y = \\begin{pmatrix}0 & -i\\\\ i & 0\\end{pmatrix}, \\quad Z = \\begin{pmatrix}1 & 0\\\\ 0 & -1\\end{pmatrix}$$
 Algebraic identities: $X^2=Y^2=Z^2=I$, $XY=iZ$, $[X, Y] = 2iZ$. Anti-commutation: $\{X, Z\} = XZ + ZX = 0$.`,
         qiskitCode: `from qiskit.quantum_info import Pauli
 
@@ -214,7 +210,7 @@ print("XZ product:\\n", (X & Z).to_matrix())`,
         id: "sparsepauliop",
         title: "SparsePauliOp",
         subtitle: "(constructing observable operators efficiently in Qiskit)",
-        content: `\`SparsePauliOp\` represents linear combinations of multi-qubit Pauli strings: $H = \sum_k c_k P_k$. This is the standard data structure for molecular Hamiltonians in chemistry and cost functions in QAOA/VQE.`,
+        content: `\`SparsePauliOp\` represents linear combinations of multi-qubit Pauli strings: $H = \\sum_k c_k P_k$. This is the standard data structure for molecular Hamiltonians in chemistry and cost functions in QAOA/VQE.`,
         qiskitCode: `from qiskit.quantum_info import SparsePauliOp
 
 # Hamiltonian: 0.5 * Z0 Z1 + 0.2 * X0 X1
@@ -228,9 +224,9 @@ print("Operator representation:", op)`,
         title: "X / H / CX / Z / S / T Gates",
         subtitle: "(single and multi-qubit gate operations)",
         content: `Elementary gate definitions:
-- **Hadamard (H):** Converts computational basis states to superposition basis states: $\frac{1}{\sqrt{2}}\begin{pmatrix}1 & 1 \\ 1 & -1\end{pmatrix}$.
-- **Phase Gates:** Z ($\pi$), S ($\pi/2$), T ($\pi/4$). $T^2 = S, S^2 = Z$.
-- **Controlled-NOT (CX):** Entangling 2-qubit gate; flips target qubit if control qubit is |1⟩.`,
+- **Hadamard (H):** Converts computational basis states to superposition basis states: $H = \\frac{1}{\\sqrt{2}}\\begin{pmatrix}1 & 1 \\\\ 1 & -1\\end{pmatrix}$.
+- **Phase Gates:** Z ($\\pi$), S ($\\pi/2$), T ($\\pi/4$). $T^2 = S, S^2 = Z$.
+- **Controlled-NOT (CX):** Entangling 2-qubit gate; flips target qubit if control qubit is $|1\\rangle$.`,
         qiskitCode: `from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(2)
@@ -245,8 +241,8 @@ print(qc)`,
         id: "tensor-products",
         title: "Tensor Products",
         subtitle: "(combining qubit statevectors and operator matrices)",
-        content: `Multi-qubit states live in the tensor product vector space $\mathcal{H}_1 \otimes \mathcal{H}_2 \otimes \dots \otimes \mathcal{H}_N$. A 2-qubit statevector has $2^2 = 4$ complex components:
-|ψ₁⟩ ⊗ |ψ₂⟩ = (a|0⟩ + b|1⟩) ⊗ (c|0⟩ + d|1⟩) = ac|00⟩ + ad|01⟩ + bc|10⟩ + bd|11⟩.`,
+        content: `Multi-qubit states live in the tensor product vector space $\\mathcal{H}_1 \\otimes \\mathcal{H}_2 \\otimes \\dots \\otimes \\mathcal{H}_N$. A 2-qubit statevector has $2^2 = 4$ complex components:
+$$|\\psi_1\\rangle \\otimes |\\psi_2\\rangle = (a|0\\rangle + b|1\\rangle) \\otimes (c|0\\rangle + d|1\\rangle) = ac|00\\rangle + ad|01\\rangle + bc|10\\rangle + bd|11\\rangle$$`,
         qiskitCode: `from qiskit.quantum_info import Statevector
 
 v1 = Statevector.from_label('0')
@@ -259,11 +255,11 @@ print("Joint 2-qubit state |01>:", v_joint.data)`,
         id: "why-gates-are-unitary",
         title: "Why Gates Are Unitary",
         subtitle: "(reversibility, norm preservation, U† U = I)",
-        content: `Quantum evolution is governed by the Schrödinger equation, dictating that all valid closed-system transformations are represented by Unitary matrices ($U^\dagger U = U U^\dagger = I$).
+        content: `Quantum evolution is governed by the Schrödinger equation, dictating that all valid closed-system transformations are represented by Unitary matrices ($U^\\dagger U = U U^\\dagger = I$).
 
 **Physical Implications:**
-1. **Norm Preservation:** Unitary operations preserve total probability $\langle\psi|U^\dagger U|\psi\rangle = \langle\psi|\psi\rangle = 1$.
-2. **Reversibility:** Every quantum operation has a deterministic inverse $U^\dagger$. Information is never lost during gate operations prior to measurement.`,
+1. **Norm Preservation:** Unitary operations preserve total probability $\\langle\\psi|U^\\dagger U|\\psi\\rangle = \\langle\\psi|\\psi\\rangle = 1$.
+2. **Reversibility:** Every quantum operation has a deterministic inverse $U^\\dagger$. Information is never lost during gate operations prior to measurement.`,
         qiskitCode: `from qiskit.quantum_info import Operator
 from qiskit import QuantumCircuit
 import numpy as np
@@ -281,7 +277,7 @@ print("Is Unitary:", identity_check)`,
         title: "Universal Gate Sets & Clifford Group",
         subtitle: "(Gottesman-Knill theorem, non-Clifford T gate)",
         content: `- **Clifford Group:** Generated by {H, S, CX}. By the Gottesman-Knill theorem, any circuit consisting purely of Clifford gates can be efficiently simulated classically in polynomial time $O(N^2)$.
-- **Universal Quantum Computing:** Adding any non-Clifford gate (such as the T gate $\text{diag}(1, e^{i\pi/4})$) to the Clifford set enables universal quantum computation capable of performing arbitrary unitary transformations.`,
+- **Universal Quantum Computing:** Adding any non-Clifford gate (such as the T gate $\\text{diag}(1, e^{i\\pi/4})$) to the Clifford set enables universal quantum computation capable of performing arbitrary unitary transformations.`,
         qiskitCode: `from qiskit import QuantumCircuit
 
 # Clifford + T Universal Set Example
@@ -319,7 +315,7 @@ print("Statevector after H-H:", Statevector(qc).data)`,
         id: "deutschs-algorithm",
         title: "Deutsch's Algorithm",
         subtitle: "(first quantum algorithm showing speedup)",
-        content: `Deutsch's algorithm determines whether a black-box boolean function $f: \{0,1\} \to \{0,1\}$ is constant ($f(0)=f(1)$) or balanced ($f(0) \neq f(1)$) using a single quantum evaluation, whereas classical algorithms require 2 evaluations.`,
+        content: `Deutsch's algorithm determines whether a black-box boolean function $f: \\{0,1\\} \\to \\{0,1\\}$ is constant ($f(0)=f(1)$) or balanced ($f(0) \\neq f(1)$) using a single quantum evaluation, whereas classical algorithms require 2 evaluations.`,
         qiskitCode: `from qiskit import QuantumCircuit
 
 # Deutsch algorithm circuit template for balanced oracle f(x)=x
@@ -336,7 +332,7 @@ print(qc)`,
         id: "deutsch-jozsa",
         title: "Deutsch-Jozsa Algorithm",
         subtitle: "(constant vs balanced function evaluation in 1 query)",
-        content: `Extends Deutsch's problem to $N$-bit inputs $f: \{0,1\}^N \to \{0,1\}$. Determines if $f$ is constant or balanced in 1 quantum query. Classically requires $2^{N-1}+1$ queries in the worst case, demonstrating exponential query complexity speedup.`,
+        content: `Extends Deutsch's problem to $N$-bit inputs $f: \\{0,1\\}^N \\to \\{0,1\\}$. Determines if $f$ is constant or balanced in 1 quantum query. Classically requires $2^{N-1}+1$ queries in the worst case, demonstrating exponential query complexity speedup.`,
         qiskitCode: `from qiskit import QuantumCircuit
 
 n = 3
@@ -367,7 +363,7 @@ print("BQP Hierarchy: P ⊆ BQP ⊆ PSPACE")`,
         subtitle: "(comprehensive catalog of quantum algorithms)",
         content: `Catalogs quantum algorithms offering speedups over classical counterparts:
 - **Algebraic / Number Theoretic:** Shor's Factoring ($O(N^3)$ vs sub-exponential classical), Discrete Logarithm.
-- **Oracular / Search:** Grover Search ($O(\sqrt{N})$ vs $O(N)$), Amplitude Amplification.
+- **Oracular / Search:** Grover Search ($O(\\sqrt{N})$ vs $O(N)$), Amplitude Amplification.
 - **Simulation / Linear Algebra:** HHL (Linear Systems), Trotterized Hamiltonian Simulation.`,
         qiskitCode: `# Quantum Algorithm Zoo Reference
 print("Shor: Exponential speedup for factoring.")
@@ -397,10 +393,10 @@ print("Utility threshold: 100+ qubits, circuit depth > 100, reliable expectation
         title: "Bell States",
         subtitle: "(the 4 maximally entangled 2-qubit basis states)",
         content: `The 4 Bell states form an orthonormal basis for 2-qubit entangled space:
-1. |Φ⁺⟩ = (|00⟩ + |11⟩)/√2
-2. |Φ⁻⟩ = (|00⟩ - |11⟩)/√2
-3. |Ψ⁺⟩ = (|01⟩ + |10⟩)/√2
-4. |Ψ⁻⟩ = (|01⟩ - |10⟩)/√2
+1. $|\\Phi^+\\rangle = \\frac{|00\\rangle + |11\\rangle}{\\sqrt{2}}$
+2. $|\\Phi^-\\rangle = \\frac{|00\\rangle - |11\\rangle}{\\sqrt{2}}$
+3. $|\\Psi^+\\rangle = \\frac{|01\\rangle + |10\\rangle}{\\sqrt{2}}$
+4. $|\\Psi^-\\rangle = \\frac{|01\\rangle - |10\\rangle}{\\sqrt{2}}$
 
 Constructed by preparing H on qubit 0, followed by CNOT(0,1), with optional Pauli X/Z single-qubit pre/post gates.`,
         qiskitCode: `from qiskit import QuantumCircuit
@@ -419,7 +415,7 @@ print("Bell state |Φ+> vector:\\n", sv.data)`,
         title: "GHZ States",
         subtitle: "(N-qubit maximal entanglement)",
         content: `The Greenberger-Horne-Zeilinger (GHZ) state generalizes Bell entanglement to $N$ qubits:
-|GHZ_N⟩ = (|00...0⟩ + |11...1⟩)/√2.
+$$|\\text{GHZ}_N\\rangle = \\frac{|00\\dots0\\rangle + |11\\dots1\\rangle}{\\sqrt{2}}$$
 Measuring any single qubit in the computational basis collapses all remaining $N-1$ qubits instantly into identical classical states (all 0s or all 1s).`,
         qiskitCode: `from qiskit import QuantumCircuit
 
@@ -436,7 +432,7 @@ print(qc.draw(output="text"))`,
         id: "chsh-inequality",
         title: "CHSH Inequality & Bell Tests",
         subtitle: "(S ≤ 2 classical vs S = 2√2 quantum violation)",
-        content: `The CHSH test proves experimental violation of local hidden-variable realism. Under classical local realism, the correlation combination $S \le 2$. Quantum mechanics predicts $S = 2\sqrt{2} \approx 2.828$ for maximally entangled Bell states at optimal measurement setting angles.`,
+        content: `The CHSH test proves experimental violation of local hidden-variable realism. Under classical local realism, the correlation combination $S \\le 2$. Quantum mechanics predicts $S = 2\\sqrt{2} \\approx 2.828$ for maximally entangled Bell states at optimal measurement setting angles.`,
         qiskitCode: `from qiskit import QuantumCircuit
 import numpy as np
 
@@ -453,7 +449,7 @@ print("CHSH measurement circuit prepared.")`,
         id: "quantum-teleportation",
         title: "Quantum Teleportation",
         subtitle: "(state transfer via pre-shared Bell pair + 2 classical bits)",
-        content: `Transfers an unknown state |ψ⟩ from Alice to Bob using 1 pre-shared Bell pair and 2 classical bits sent via classical communication channel. Alice's original state is destroyed upon measurement, fully obeying the No-Cloning theorem.`,
+        content: `Transfers an unknown state $|\\psi\\rangle$ from Alice to Bob using 1 pre-shared Bell pair and 2 classical bits sent via classical communication channel. Alice's original state is destroyed upon measurement, fully obeying the No-Cloning theorem.`,
         qiskitCode: `from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(3, 2)
@@ -478,7 +474,7 @@ print(qc.draw(output="text"))`,
         id: "no-cloning-theorem",
         title: "No-Cloning Theorem",
         subtitle: "(sketches: copy → know → measure → disturb)",
-        content: `States that an arbitrary unknown quantum state |ψ⟩ cannot be cloned identically: $U(|ψ⟩|0⟩) \neq |ψ⟩|ψ⟩$. Proof relies on unitarity: unitary operations preserve inner products, which is violated if $U(|ψ⟩|0⟩) = |ψ⟩|ψ⟩$ for non-orthogonal states.`,
+        content: `States that an arbitrary unknown quantum state $|\\psi\\rangle$ cannot be cloned identically: $U(|\\psi\\rangle|0\\rangle) \\neq |\\psi\\rangle|\\psi\\rangle$. Proof relies on unitarity: unitary operations preserve inner products, which is violated if $U(|\\psi\\rangle|0\\rangle) = |\\psi\\rangle|\\psi\\rangle$ for non-orthogonal states.`,
         qiskitCode: `# Proof concept: Unitary inner product preservation
 # <psi|phi> != (<psi|phi>)^2 for general quantum states
 print("No-cloning enforces quantum cryptography security.")`,
@@ -518,7 +514,7 @@ print(qc)`,
         id: "e91-qkd",
         title: "E91 Protocol",
         subtitle: "(Entanglement-based QKD using CHSH Bell violation)",
-        content: `Ekert QKD protocol (1991). Uses entangled Bell pairs distributed from an central source to Alice and Bob. Security is guaranteed by testing CHSH inequality violation on subset runs; any eavesdropping destroys entanglement and lowers $S \le 2$.`,
+        content: `Ekert QKD protocol (1991). Uses entangled Bell pairs distributed from an central source to Alice and Bob. Security is guaranteed by testing CHSH inequality violation on subset runs; any eavesdropping destroys entanglement and lowers $S \\le 2$.`,
         qiskitCode: `from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(2)
@@ -599,7 +595,7 @@ print("Middle-out GHZ depth:", qc.depth())`,
         id: "recursive-fan-out",
         title: "Recursive Fan-Out",
         subtitle: "(doubling entanglement spread per layer: ⌈log₂ N⌉ + 1)",
-        content: `Applies recursive tree doubling to generate GHZ states in $\lceil\log_2 N\rceil + 1$ depth. Each newly entangled qubit acts as a control in subsequent parallel layers.`,
+        content: `Applies recursive tree doubling to generate GHZ states in $\\lceil\\log_2 N\\rceil + 1$ depth. Each newly entangled qubit acts as a control in subsequent parallel layers.`,
         qiskitCode: `from qiskit import QuantumCircuit
 
 # 4 Qubit Tree GHZ
@@ -653,7 +649,7 @@ print("Transpiled CX count:", transpiled_qc.count_ops().get('cx', 0))`,
         title: "Backend Properties & Noise Numbers",
         subtitle: "(T1, T2, single-qubit error, CX error, readout error)",
         content: `Physical backend performance parameters:
-- **T₁ Relaxation Time:** Characteristic time for qubit to decay from |1⟩ to |0⟩ due to thermal energy dissipation (~200–300 μs on Heron).
+- **T₁ Relaxation Time:** Characteristic time for qubit to decay from $|1\\rangle$ to $|0\\rangle$ due to thermal energy dissipation (~200–300 μs on Heron).
 - **T₂ Dephasing Time:** Time scale over which relative quantum phase coherence is lost.
 - **Readout Error:** Confusion probability matrix during qubit state assignment.`,
         qiskitCode: `# Backend physical properties format
@@ -679,9 +675,9 @@ print("Sample IBM Heron Backend Metrics:", properties)`,
         id: "density-matrix",
         title: "Density Matrix",
         subtitle: "(ρ = ∑ p_i |ψ_i⟩⟨ψ_i|, mixed vs pure states)",
-        content: `The density matrix ρ describes statistical ensembles of pure states and open quantum systems:
-ρ = ∑ p_i |ψ_i⟩⟨ψ_i|.
-Properties: Tr(ρ) = 1, ρ = ρ†, positive semi-definite. Pure states satisfy Tr(ρ²) = 1; mixed states satisfy Tr(ρ²) < 1.`,
+        content: `The density matrix $\\rho$ describes statistical ensembles of pure states and open quantum systems:
+$$\\rho = \\sum_i p_i |\\psi_i\\rangle\\langle\\psi_i|$$
+Properties: $\\text{Tr}(\\rho) = 1$, $\\rho = \\rho^\\dagger$, positive semi-definite. Pure states satisfy $\\text{Tr}(\\rho^2) = 1$; mixed states satisfy $\\text{Tr}(\\rho^2) < 1$.`,
         qiskitCode: `from qiskit.quantum_info import DensityMatrix, Statevector
 
 # Mixed state: 50% |0>, 50% |1>
@@ -696,9 +692,9 @@ print("Purity Tr(ρ^2):", rho.purity())`,
         title: "Pauli & Depolarizing Noise Models",
         subtitle: "(bit-flip, phase-flip, thermal relaxation channels)",
         content: `Models physical environmental decoherence channels:
-- **Depolarizing Noise:** Replaces qubit state with maximally mixed state I/2 with probability p.
-- **Bit-Flip Channel:** Applies X gate error with probability p.
-- **Phase-Flip Channel:** Applies Z gate error with probability p.`,
+- **Depolarizing Noise:** Replaces qubit state with maximally mixed state $I/2$ with probability $p$.
+- **Bit-Flip Channel:** Applies X gate error with probability $p$.
+- **Phase-Flip Channel:** Applies Z gate error with probability $p$.`,
         qiskitCode: `from qiskit_aer.noise import NoiseModel, depolarizing_error
 
 noise_model = NoiseModel()
@@ -759,7 +755,7 @@ print(qc.draw(output="text"))`,
         id: "zne-and-pec",
         title: "Zero Noise Extrapolation (ZNE) & PEC",
         subtitle: "(noise amplification extrapolation & probabilistic cancellation)",
-        content: `- **Zero Noise Extrapolation (ZNE):** Intentionally amplifies hardware noise (e.g. by pulse stretching or digital gate folding $G \to G G^\dagger G$), measures expectation values at multiple noise levels, and extrapolates back to the zero-noise limit.
+        content: `- **Zero Noise Extrapolation (ZNE):** Intentionally amplifies hardware noise (e.g. by pulse stretching or digital gate folding $G \\to G G^\\dagger G$), measures expectation values at multiple noise levels, and extrapolates back to the zero-noise limit.
 - **Probabilistic Error Cancellation (PEC):** Expresses ideal un-errored operations as linear combinations of noisy hardware channels, sampling inverted noise instances at the cost of sampling overhead.`,
         qiskitCode: `# Digital Gate Folding for ZNE: G -> G G_dag G
 from qiskit import QuantumCircuit
@@ -789,16 +785,17 @@ print("Surface code encodes 1 logical qubit across D^2 physical qubits.")`,
   {
     id: "quantum-algorithms",
     title: "12. Quantum Algorithms",
-    description: "QFT, QPE, VQE, QAOA, Grover Search, and Hamiltonian Simulation.",
+    description: "QFT, QPE (H2 Worked Example), VQE, QAOA (Partition Problem Worked Example), and Grover Search.",
     topics: [
       {
         id: "qft-and-qpe",
         title: "QFT & Quantum Phase Estimation (QPE)",
-        subtitle: "(with H2 worked example reference)",
+        subtitle: "(with H2 Worked Example)",
         content: `- **Quantum Fourier Transform (QFT):** Maps computational basis states to phase frequency basis in $O(N^2)$ gates vs classical FFT $O(N 2^N)$.
-- **Quantum Phase Estimation (QPE):** Estimates the eigenvalue phase $\theta$ of unitary operator $U|\psi⟩ = e^{2\pi i \theta}|\psi⟩$. Foundation for Shor's algorithm and molecular ground state chemistry.
+- **Quantum Phase Estimation (QPE):** Estimates the eigenvalue phase $\\theta$ of unitary operator $U|\\psi\\rangle = e^{2\\pi i \\theta}|\\psi\\rangle$. Foundation for Shor's algorithm and molecular ground state chemistry.
 
-*Worked Example Note:* Source material contains an $H_2$ molecule worked example estimating ground state phase using QPE.`,
+**Worked Example Note — $H_2$ Molecule Ground State:**
+Estimating the molecular ground state energy of $H_2$ at bond distance $R=0.735\\text{ Å}$. The Jordan-Wigner transformation maps the 2-qubit molecular Hamiltonian into Pauli operators $H = c_0 I + c_1 Z_0 + c_2 Z_1 + c_3 Z_0 Z_1 + c_4 X_0 X_1$. QPE measures the phase $\\theta = E_{\\text{ground}} / (2\\pi)$. *(Links back to worked example on source site)*.`,
         qiskitCode: `from qiskit import QuantumCircuit
 import numpy as np
 
@@ -818,7 +815,7 @@ print("QFT Circuit:\\n", qc.draw(output="text"))`,
         id: "grovers-algorithm",
         title: "Grover's Search Algorithm",
         subtitle: "(amplitude amplification for O(√N) search)",
-        content: `Searches an unstructured database of $N = 2^n$ elements in $O(\sqrt{N})$ queries. Uses an Oracle phase-inversion step followed by a Diffuser operator (inversion about the mean) to amplify the amplitude of target marked elements.`,
+        content: `Searches an unstructured database of $N = 2^n$ elements in $O(\\sqrt{N})$ queries. Uses an Oracle phase-inversion step followed by a Diffuser operator (inversion about the mean) to amplify the amplitude of target marked elements.`,
         qiskitCode: `from qiskit import QuantumCircuit
 
 # Grover search circuit for marking state |11>
@@ -842,11 +839,12 @@ print(qc.draw(output="text"))`,
       {
         id: "vqe-and-qaoa",
         title: "VQE & QAOA",
-        subtitle: "(with Partition Problem worked example reference)",
-        content: `- **VQE (Variational Quantum Eigensolver):** Hybrid quantum-classical algorithm using parameterized ansatz $U(\theta)$ to minimize expectation value $\langle\psi(\theta)|H|\psi(\theta)\rangle$ to bound ground-state energies.
-- **QAOA (Quantum Approximate Optimization Algorithm):** Solves combinatorial optimization graph problems (Max-Cut, Partitioning) using alternating cost and mixer Hamiltonian layers.
+        subtitle: "(with Partition Problem Worked Example)",
+        content: `- **VQE (Variational Quantum Eigensolver):** Hybrid quantum-classical algorithm using parameterized ansatz $U(\\theta)$ to minimize expectation value $\\langle\\psi(\\theta)|H|\\psi(\\theta)\\rangle$ to bound ground-state energies.
+- **QAOA (Quantum Approximate Optimization Algorithm):** Solves combinatorial optimization graph problems (Max-Cut, Partitioning) using alternating cost Hamiltonian $H_C$ and mixer Hamiltonian $H_M = \\sum X_i$ layers.
 
-*Worked Example Note:* Source content includes a worked Partition Problem example mapped to QAOA graph cost terms.`,
+**Worked Example Note — Number Partitioning Problem:**
+Partitioning a set of numbers $S = \\{s_1, s_2, \\dots, s_N\\}$ into two subsets such that difference $(\\sum_{i \\in A} s_i - \\sum_{j \\in B} s_j)^2$ is minimized. Mapped to Ising Hamiltonian $H_C = (\\sum s_i Z_i)^2$. QAOA evaluates cost expectations using Estimator primitive. *(Links back to worked example on source site)*.`,
         qiskitCode: `from qiskit import QuantumCircuit
 from qiskit.circuit import Parameter
 
@@ -877,7 +875,7 @@ print(qc.draw(output="text"))`,
         id: "data-encoding-feature-maps",
         title: "Data Encoding & Feature Maps",
         subtitle: "(ZZFeatureMap, non-linear classical to quantum embedding)",
-        content: `Quantum Feature Maps map classical input vectors $x \in \mathbb{R}^D$ into quantum Hilbert states $|\Phi(x)⟩$. \`ZZFeatureMap\` uses non-linear single-qubit rotations combined with entangling ZZ phase interactions to create high-dimensional kernel spaces resistant to classical simulation.`,
+        content: `Quantum Feature Maps map classical input vectors $x \\in \\mathbb{R}^D$ into quantum Hilbert states $|\\Phi(x)\\rangle$. \`ZZFeatureMap\` uses non-linear single-qubit rotations combined with entangling ZZ phase interactions to create high-dimensional kernel spaces resistant to classical simulation.`,
         qiskitCode: `from qiskit import QuantumCircuit
 from qiskit.circuit import ParameterVector
 
@@ -897,7 +895,7 @@ print("Custom ZZ Feature Map built.")`,
         id: "qnn-and-quantum-kernels",
         title: "QNN & Quantum Kernel Methods",
         subtitle: "(Quantum Kernel Estimation via state overlap |⟨ψ(x)|ψ(x')⟩|²)",
-        content: `Quantum Kernel Estimation computes transition matrix inner products $K(x, x') = |\langle\Phi(x)|\Phi(x')\rangle|^2$ on quantum processors, which are then passed to classical Support Vector Machines (SVM) for classification.`,
+        content: `Quantum Kernel Estimation computes transition matrix inner products $K(x, x') = |\\langle\\Phi(x)|\\Phi(x')\\rangle|^2$ on quantum processors, which are then passed to classical Support Vector Machines (SVM) for classification.`,
         qiskitCode: `# Quantum Kernel calculation structure
 # K(x, x') = |<0| U_dag(x') U(x) |0>|^2
 print("Quantum Kernel estimator ready for SVM pipeline.")`,
@@ -928,7 +926,7 @@ print("Advantage Checklist: Hardness -> Verifiability -> Practical Utility")`,
         title: "Peaked Circuits & Loschmidt Echo",
         subtitle: "(Operator Loschmidt Echo benchmark & variational trust bounds)",
         content: `- **Peaked Circuits:** Designed such that the ideal output concentrates total probability into a small subset of bitstrings, serving as scalable benchmark targets.
-- **Loschmidt Echo:** Measures coherence preservation by running evolution $U$ followed by inverted backward evolution $U^\dagger$, testing overall system fidelity $F = |\langle\psi_0|U^\dagger U|\psi_0\rangle|^2$.`,
+- **Loschmidt Echo:** Measures coherence preservation by running evolution $U$ followed by inverted backward evolution $U^\\dagger$, testing overall system fidelity $F = |\\langle\\psi_0|U^\\dagger U|\\psi_0\\rangle|^2$.`,
         qiskitCode: `from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(2)
@@ -981,7 +979,7 @@ print("Slurm Job Launcher: qiskit_primitives_hpc.py")`,
         subtitle: "(abstract, claim verification, depth scaling, hardware assumptions)",
         content: `A systematic approach to evaluating quantum computing literature:
 1. **Target Claim:** Does the paper claim exponential speedup, polynomial speedup, or empirical utility?
-2. **Circuit Depth Scaling:** Is circuit depth $O(\log N)$, $O(N)$, or exponential in problem size?
+2. **Circuit Depth Scaling:** Is circuit depth $O(\\log N)$, $O(N)$, or exponential in problem size?
 3. **Hardware Connectivity Assumptions:** Does the algorithm assume all-to-all connectivity or account for SWAP routing on planar/heavy-hex graphs?
 4. **Baseline comparison:** Is the quantum method compared against state-of-the-art classical algorithms (tensor networks, heuristics)?`,
         qiskitCode: `# Literature Audit Checklist

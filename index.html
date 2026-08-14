@@ -3,30 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Qashu — Quantum Computing Study Roadmap & Reference</title>
-  <meta name="description" content="Qashu: A designer-grade self-directed quantum computing curriculum reference site featuring runnable Qiskit circuit examples, concept graphs, and structured study paths.">
+  <title>Qashu — Designer-Grade Quantum Computing Study Roadmap & Reference</title>
+  <meta name="description" content="Qashu: Designer-grade self-directed quantum computing curriculum reference site featuring interactive 3D Bloch sphere, runnable Qiskit circuit examples, concept graphs, and structured study paths.">
   
-  <!-- Fonts -->
+  <!-- Google Fonts & KaTeX CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Stylesheet -->
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+
+  <!-- Qashu Stylesheet -->
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+
+  <!-- Floating Background Ambient Particle Orbits -->
+  <canvas id="ambient-canvas" class="ambient-canvas"></canvas>
 
   <div class="app-container">
     <!-- Sidebar Navigation (Vignelli Grid Style) -->
     <aside class="sidebar">
       <div class="brand-header">
         <div class="brand-logo">
-          <div class="brand-symbol"></div>
+          <div class="brand-symbol">
+            <span class="q-symbol">Q</span>
+          </div>
           <div>
             <h1 class="brand-title">Qashu</h1>
             <div class="brand-tagline">Quantum Study Roadmap</div>
           </div>
         </div>
+      </div>
+
+      <div class="nav-order-toggle">
+        <span class="nav-order-label">Curriculum Index</span>
       </div>
 
       <nav class="nav-scroll">
@@ -36,15 +46,18 @@
       </nav>
     </aside>
 
-    <!-- Main Content View -->
+    <!-- Main Content Area -->
     <main class="main-content">
 
-      <!-- Hero Landing Visual (Da Vinci / Zaha Hadid Wave Aesthetic) -->
+      <!-- Hero Landing Header (Da Vinci / Zaha Hadid Wave & Glassmorphism Aesthetic) -->
       <header class="hero-section">
         <div class="hero-content">
-          <span class="hero-badge">Self-Directed Quantum Curriculum</span>
+          <div class="hero-badge-row">
+            <span class="hero-badge">✦ Self-Directed Quantum Curriculum</span>
+            <span class="hero-status">Qiskit 1.x Verified</span>
+          </div>
           <h1 class="hero-title">Qashu Quantum Roadmap</h1>
-          <p class="hero-subtitle">Master quantum computing from foundational qubit linear algebra to hardware noise mitigation and Qiskit 1.x algorithms.</p>
+          <p class="hero-subtitle">An authoritative 16-section quantum computing reference curriculum—from single-qubit linear algebra and circuit transpilation to error mitigation and quantum-centric HPC.</p>
           
           <!-- Search Bar -->
           <div class="search-wrapper">
@@ -52,23 +65,27 @@
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="text" id="search-input" class="search-input" placeholder="Search 16 curriculum sections, Qiskit code, or algorithms..." aria-label="Search curriculum">
+            <input type="text" id="search-input" class="search-input" placeholder="Search 16 curriculum sections, Qiskit code, or worked examples..." aria-label="Search curriculum">
           </div>
         </div>
       </header>
 
-      <!-- View Switcher Toolbar -->
+      <!-- View Mode Toolbar -->
       <div class="toolbar-section">
         <div class="view-toggle">
           <button id="btn-view-grid" class="btn-toggle active">Curriculum Grid</button>
+          <button id="btn-view-bloch" class="btn-toggle">3D Bloch Sphere Simulator</button>
           <button id="btn-view-graph" class="btn-toggle">Concept Graph View</button>
         </div>
       </div>
 
-      <!-- Suggested Study Order Tracker -->
+      <!-- Suggested Study Order Tracker Card -->
       <section class="study-progress-card">
         <div class="progress-header">
-          <h3 class="progress-title">Suggested Study Order (19-Step Guided Path)</h3>
+          <div>
+            <h3 class="progress-title">Suggested Study Order (19-Step Guided Path)</h3>
+            <p class="progress-sub">Track your progress through the recommended sequence of topics.</p>
+          </div>
           <span id="study-progress-text" class="progress-stats">0 of 19 Steps Completed (0%)</span>
         </div>
         <div class="progress-track">
@@ -85,14 +102,54 @@
           <!-- 16 Curriculum Sections rendered dynamically -->
         </div>
 
-        <!-- Open Threads / Roadmap-in-progress -->
-        <section class="curriculum-section">
+        <!-- Open Threads & Research Roadmap -->
+        <section class="curriculum-section card">
           <div class="section-header">
             <h2>Open Threads & Research Roadmap</h2>
-            <p class="section-desc">Active quantum computing research topics and ongoing curriculum extensions.</p>
+            <p class="section-desc">Active quantum computing research topics and ongoing curriculum extensions (preserved from source roadmap).</p>
           </div>
           <div id="open-threads-container" class="open-threads-grid">
             <!-- Populated by app.js -->
+          </div>
+        </section>
+      </div>
+
+      <!-- 3D Bloch Sphere Interactive Simulator Container -->
+      <div id="bloch-view-content" style="display: none;">
+        <section class="bloch-simulator-card">
+          <div class="bloch-header">
+            <h2>3D Bloch Sphere Interactive State Visualizer</h2>
+            <p class="section-desc">Drag to rotate the 3D sphere. Apply gates to observe single-qubit rotations on statevector |ψ⟩ = α|0⟩ + βe^(iφ)|1⟩.</p>
+          </div>
+          
+          <div class="bloch-flex">
+            <div class="bloch-canvas-box">
+              <canvas id="bloch-canvas"></canvas>
+            </div>
+            
+            <div class="bloch-controls-box">
+              <h4 class="ctrl-title">Apply Single-Qubit Quantum Gates</h4>
+              <div class="gate-btn-group">
+                <button class="btn-bloch-gate" data-gate="H">H (Hadamard)</button>
+                <button class="btn-bloch-gate" data-gate="X">X (Pauli Bit-Flip)</button>
+                <button class="btn-bloch-gate" data-gate="Z">Z (Pauli Phase-Flip)</button>
+                <button class="btn-bloch-gate" data-gate="S">S (Phase π/2)</button>
+                <button class="btn-bloch-gate" data-gate="T">T (Phase π/4)</button>
+              </div>
+
+              <div class="angle-sliders">
+                <div class="slider-row">
+                  <label for="slider-theta">θ (Theta - Polar Angle [0, π]):</label>
+                  <input type="range" id="slider-theta" min="0" max="3.14159" step="0.05" value="0.78539">
+                  <span id="val-theta">0.79 rad</span>
+                </div>
+                <div class="slider-row">
+                  <label for="slider-phi">φ (Phi - Azimuthal Angle [0, 2π]):</label>
+                  <input type="range" id="slider-phi" min="0" max="6.28318" step="0.05" value="0.78539">
+                  <span id="val-phi">0.79 rad</span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </div>
@@ -109,7 +166,10 @@
     </main>
   </div>
 
-  <!-- Application Script Module -->
+  <!-- KaTeX JavaScript Engine -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+
+  <!-- Qashu Module Application Scripts -->
   <script type="module" src="./app.js"></script>
 
 </body>
