@@ -164,17 +164,65 @@ class QashuVaultApp {
 
   parseMarkdown(text) {
     if (!text) return '';
-    return text
-      .replace(/### (.*?)\n/g, '<h3>$1</h3>')
-      .replace(/## (.*?)\n/g, '<h2>$1</h2>')
-      .replace(/# (.*?)\n/g, '<h1>$1</h1>')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/```python([\s\S]*?)```/g, '<pre><code class="language-python">$1</code></pre>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/- \*\*(.*?)\*\* \((.*?)\)/g, '<li><strong>$1</strong> ($2)</li>')
-      .replace(/- (.*?)\n/g, '<li>$1</li>')
-      .replace(/\n\n/g, '<br>');
+
+    // Handle code blocks first to preserve formatted code
+    const codeBlocks = [];
+    let parsed = text.replace(/```([\s\S]*?)```/g, (match, p1) => {
+      codeBlocks.push(p1);
+      return `___CODE_BLOCK_${codeBlocks.length - 1}___`;
+    });
+
+    // Handle inline links [Text](url) -> <a href="#note/url">Text</a>
+    parsed = parsed.replace(/\[([^\]]+)\]\(\.\/([^)]+)\)/g, '<a href="#note/$2">$1</a>');
+    parsed = parsed.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="#note/$2">$1</a>');
+
+    // Split paragraphs by double newlines
+    const paragraphs = parsed.split(/\n\n+/);
+
+    const renderedParagraphs = paragraphs.map(p => {
+      let line = p.trim();
+
+      if (line.startsWith('# ')) {
+        return `<h1>${line.substring(2)}</h1>`;
+      }
+      if (line.startsWith('## ')) {
+        return `<h2>${line.substring(3)}</h2>`;
+      }
+      if (line.startsWith('### ')) {
+        return `<h3>${line.substring(4)}</h3>`;
+      }
+
+      if (line.startsWith('<pre class="ascii-art">')) {
+        return line;
+      }
+
+      // Convert inline formatting
+      line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      line = line.replace(/\*(.*?)\*/g, '<em>$1</em>');
+      line = line.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      // Convert bullet lists
+      if (line.includes('- ')) {
+        const items = line.split('\n').filter(l => l.trim().startsWith('- '));
+        if (items.length > 0) {
+          const listHtml = items.map(it => `<li>${it.trim().substring(2)}</li>`).join('');
+          return `<ul>${listHtml}</ul>`;
+        }
+      }
+
+      return `<p>${line.replace(/\n/g, '<br>')}</p>`;
+    });
+
+    let finalHtml = renderedParagraphs.join('\n');
+
+    // Restore code blocks
+    finalHtml = finalHtml.replace(/___CODE_BLOCK_(\d+)___/g, (match, p1) => {
+      const idx = parseInt(p1, 10);
+      const rawCode = codeBlocks[idx] || '';
+      return `<pre><code>${rawCode.trim()}</code></pre>`;
+    });
+
+    return finalHtml;
   }
 }
 
