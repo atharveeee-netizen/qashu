@@ -1002,7 +1002,7 @@ export const VAULT_NOTES = [
     "filePath": "index.md",
     "title": "Qashu",
     "links": [
-      "qc-study-roadmap"
+      "qashu"
     ],
     "tags": [],
     "content": "  ...\n    .:.\n      .:.\n        .::.\n          .:*.\n            .*#:.                               ..\n              .##*:.                        .:::*#*.\n                :###*::..         .......:**#*.:*:::\n                 .###*:...::::::**############:.#.::\n                  :#:..*####**::**###*::#####*..:.:.\n                   ..:###*..      ...  *####:..:..\n                    :*##:            .:####:.:..\n                   .*##:             .###:..:.\n                   ::##:             :#*::.:\n                  .::###.          .*#:.:#.\n                  ::###*...     .:*#*:.....\n                 ::*###. ..:::*##*:.... .*:\n               ..:#####*#####*:.. .....:##*\n             ...*:*####**::.  ..... .::**##*.\n           ...:.::::::::.......          ..*#:\n           *..*:::.........                 .:..\n           .::....                             ...\n                                                  ..\nA self-directed quantum computing curriculum - gates and entanglement through algorithms, error mitigation, and quantum advantage.\nStart here: Qashu",
@@ -1285,8 +1285,8 @@ export const VAULT_NOTES = [
     "order": 999
   },
   {
-    "slug": "qc-study-roadmap",
-    "filePath": "QC Study Roadmap.md",
+    "slug": "qashu",
+    "filePath": "Qashu.md",
     "title": "Qashu",
     "links": [
       "tags/qc/moc",
