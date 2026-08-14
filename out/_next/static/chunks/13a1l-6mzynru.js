@@ -1,5 +1,5 @@
 (globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,52683,e=>{"use strict";var t=e.i(43476),a=e.i(71645);let i=[{slug:"qashu-index",title:"Qashu",category:"Map of Content",tags:["qc/moc"],date:"Jul 27, 2026",readTime:"16 min read",content:`
-Map of Content for a self-directed quantum computing curriculum, built up from lecture material, hands-on labs, and other resources along the way. Central hub — everything links back here.
+Map of Content for a self-directed quantum computing curriculum, built up from lecture material, hands-on labs, and other resources along the way. Central hub - everything links back here.
 
 ## Concept Map
 
@@ -7,14 +7,14 @@ Map of Content for a self-directed quantum computing curriculum, built up from l
 - **What is a Quantum Computer** (the physical device and why it's not "a faster classical computer")
 - **What is a Qubit** (state vector, ket notation, normalization)
 - **Superposition** (interference, not classical probability)
-- **Bloch Sphere** (the geometric picture — and where it stops applying)
+- **Bloch Sphere** (the geometric picture - and where it stops applying)
 - **Measurement and Collapse** (the Born rule, why quantum programs are inherently probabilistic)
 
 ### Programming a Quantum Computer
 - **QuantumCircuit Basics** (registers, adding gates, .compose(), drawing)
 - **The Primitives Family** (Sampler vs Estimator vs Executor, PUBs, local vs Runtime)
 - **Parameterized Circuits** (Parameter/ParameterVector, why transpile-once-bind-many matters)
-- **Simulators — Statevector vs Shot-Based** (exact amplitudes vs sampled counts, fake backends)
+- **Simulators - Statevector vs Shot-Based** (exact amplitudes vs sampled counts, fake backends)
 
 ### Foundations
 - **Pauli Operators** (X, Y, Z, identity, matrix representations)
@@ -85,12 +85,12 @@ Map of Content for a self-directed quantum computing curriculum, built up from l
 - **First-Pass Framework for Quantum Papers**
 - **Spotting Hype and Omissions**
 `},{slug:"absolute-basics/what-is-a-quantum-computer",title:"What is a Quantum Computer",category:"Absolute Basics",tags:["qc/basics","qc/hardware"],date:"Jul 27, 2026",content:`
-A quantum computer is a device that stores and transforms information in qubits — quantum-mechanical states — instead of classical bits, exploiting superposition and entanglement to represent and manipulate information in ways classical bits fundamentally can’t. Key insight: it is not a faster classical computer.
+A quantum computer is a device that stores and transforms information in qubits - quantum-mechanical states - instead of classical bits, exploiting superposition and entanglement to represent and manipulate information in ways classical bits fundamentally can’t. Key insight: it is not a faster classical computer.
 
 ### What's physically inside one
-IBM’s devices use superconducting transmon qubits — tiny circuits etched from superconducting metal on a chip, each behaving like an artificial atom with quantized energy levels that stand in for $|0\\rangle$ and $|1\\rangle$.
+IBM’s devices use superconducting transmon qubits - tiny circuits etched from superconducting metal on a chip, each behaving like an artificial atom with quantized energy levels that stand in for $|0\\rangle$ and $|1\\rangle$.
 
-What’s actually inside a transmon: a Josephson junction — a thin insulating gap between two superconductors — acting as a nonlinear inductor in an otherwise ordinary LC oscillator circuit.
+What’s actually inside a transmon: a Josephson junction - a thin insulating gap between two superconductors - acting as a nonlinear inductor in an otherwise ordinary LC oscillator circuit.
 
 \`\`\`python
 from qiskit import QuantumCircuit
@@ -134,9 +134,9 @@ Any single-qubit pure state can be written using two real angles:
 
 $$|\\psi\\rangle = \\cos\\!\\left(\\frac{\\theta}{2}\\right)|0\\rangle + e^{i\\phi}\\sin\\!\\left(\\frac{\\theta}{2}\\right)|1\\rangle$$
 
-This is a point on the surface of a unit sphere — the Bloch sphere.
+This is a point on the surface of a unit sphere - the Bloch sphere.
 `},{slug:"absolute-basics/measurement-and-collapse",title:"Measurement and Collapse",category:"Absolute Basics",tags:["qc/basics","qc/math"],date:"Jul 27, 2026",content:`
-Measuring a qubit $|\\psi\\rangle = \\alpha|0\\rangle + \\beta|1\\rangle$ gives outcome 0 with probability $|\\alpha|^2$ and outcome 1 with probability $|\\beta|^2$ — the Born rule.
+Measuring a qubit $|\\psi\\rangle = \\alpha|0\\rangle + \\beta|1\\rangle$ gives outcome 0 with probability $|\\alpha|^2$ and outcome 1 with probability $|\\beta|^2$ - the Born rule.
 
 \`\`\`python
 from qiskit import QuantumCircuit

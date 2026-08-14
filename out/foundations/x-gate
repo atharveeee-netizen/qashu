@@ -7,7 +7,7 @@
 <ul>
 <li><a href="../foundations/pauli-operators" class="internal internal-link alias" data-slug="foundations/pauli-operators">Pauli Operators</a></li>
 <li><a href="../foundations/h-gate" class="internal internal-link alias" data-slug="foundations/h-gate">H Gate</a></li>
-<li><a href="../entangled-states/bell-states" class="internal internal-link alias" data-slug="entangled-states/bell-states">Bell States</a> — X is used to reach the other three Bell states from the base one</li>
+<li><a href="../entangled-states/bell-states" class="internal internal-link alias" data-slug="entangled-states/bell-states">Bell States</a> - X is used to reach the other three Bell states from the base one</li>
 <li><a href="../absolute-basics/bloch-sphere" class="internal internal-link alias" data-slug="absolute-basics/bloch-sphere">Bloch Sphere</a></li>
 </ul>
 <h2 id="self-check">Self-Check<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#self-check" class="internal internal-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
