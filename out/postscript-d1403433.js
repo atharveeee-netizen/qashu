@@ -13,3 +13,20 @@ await Promise.all([
   import("./static/scripts/script-11-3faff93b.js")
 ]);
 await import("./static/scripts/script-12-d93af9ba.js");
+
+// Dispatch nav & render events so all module scripts initialize after async load
+document.dispatchEvent(new CustomEvent("nav"));
+document.dispatchEvent(new CustomEvent("render"));
+
+// Fallback global graph exploded view handler
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".global-graph-icon");
+  if (btn) {
+    const outer = document.querySelector(".global-graph-outer");
+    if (outer) outer.classList.toggle("active");
+  }
+  const closeBtn = e.target.closest(".global-graph-outer");
+  if (closeBtn && (e.target === closeBtn || e.target.classList.contains("global-graph-outer"))) {
+    closeBtn.classList.remove("active");
+  }
+});
