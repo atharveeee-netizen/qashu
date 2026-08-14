@@ -3,8 +3,17 @@
   "pages404": true,
   "appType": "app",
   "caseSensitive": false,
-  "basePath": "",
+  "basePath": "/qashu",
   "redirects": [
+    {
+      "source": "/qashu/",
+      "destination": "/qashu",
+      "basePath": false,
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^/qashu/$"
+    },
     {
       "source": "/:path+/",
       "destination": "/:path+",
