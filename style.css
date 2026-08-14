@@ -1,4 +1,4 @@
-/* High-Fidelity Quartz / Obsidian Digital Garden CSS Theme for Qashu */
+/* High-Fidelity Quartz 4.0 Theme for Qashu with Hover-Reveal Sidebars */
 
 :root[data-theme="dark"] {
   --bg: #161618;
@@ -11,6 +11,7 @@
   --link-hover: #c2d7ff;
   --code-bg: #1f1f23;
   --accent: #8ab4f8;
+  --folder-title: #d4d4d8;
 }
 
 :root[data-theme="light"] {
@@ -24,6 +25,7 @@
   --link-hover: #1557b0;
   --code-bg: #f3f0f0;
   --accent: #1a73e8;
+  --folder-title: #27272a;
 }
 
 *, *::before, *::after {
@@ -39,9 +41,9 @@ body {
   font-size: 1.15rem;
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* Sticky Far-Left Flush Page Layout */
 .page {
   width: 100%;
   max-width: 100%;
@@ -53,22 +55,75 @@ body {
   display: flex;
   min-height: 100vh;
   width: 100%;
+  position: relative;
 }
 
-/* Left Sidebar - Sticky & Flush to Left Most Screen Edge */
-.left.sidebar {
-  width: 340px;
-  flex-shrink: 0;
-  padding: 2rem 1.75rem;
-  border-right: 1px solid var(--border);
+/* Hover Edge Trigger Zones */
+.hover-zone {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 24px;
+  z-index: 99;
+  background: transparent;
+}
+.left-zone { left: 0; }
+.right-zone { right: 0; }
+
+/* Sidebars - Slide & Hover Reveal System */
+.sidebar {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  background-color: var(--bg);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  overflow-y: auto;
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  overflow-y: auto;
-  background-color: var(--bg);
+  box-shadow: 0 0 25px rgba(0,0,0,0.3);
+}
+
+.left.sidebar {
+  left: 0;
+  width: 320px;
+  border-right: 1px solid var(--border);
+  transform: translateX(0); /* Default open / pinned */
+}
+
+.left.sidebar.collapsed {
+  transform: translateX(-100%);
+  opacity: 0.2;
+}
+
+.left.sidebar.collapsed:hover, #left-hover-zone:hover + .left.sidebar {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.right.sidebar {
+  right: 0;
+  width: 300px;
+  border-left: 1px solid var(--border);
+  transform: translateX(0); /* Default open / pinned */
+}
+
+.right.sidebar.collapsed {
+  transform: translateX(100%);
+  opacity: 0.2;
+}
+
+.right.sidebar.collapsed:hover, #right-hover-zone:hover + .right.sidebar {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .page-title {
@@ -80,6 +135,22 @@ body {
 .page-title a {
   color: var(--text-dark);
   text-decoration: none;
+}
+
+.btn-pin {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+.btn-pin:hover {
+  background: var(--bg-secondary);
+  color: var(--text-dark);
 }
 
 .sidebar-controls {
@@ -114,6 +185,7 @@ body {
   justify-content: center;
 }
 
+/* Category Explorer Folder Tree */
 .explorer h2 {
   font-family: "Schibsted Grotesk", sans-serif;
   font-size: 0.9rem;
@@ -122,27 +194,65 @@ body {
   letter-spacing: 0.08em;
   color: var(--text-muted);
   margin-bottom: 0.85rem;
-  background: transparent;
-  padding: 0;
 }
 
-.explorer-ul {
+.explorer-folder-tree {
   list-style: none;
 }
 
-.explorer-item {
-  margin-bottom: 0.4rem;
+.folder-item {
+  margin-bottom: 0.5rem;
+}
+
+.folder-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--folder-title);
+  cursor: pointer;
+  padding: 0.35rem 0.4rem;
+  border-radius: 4px;
+  user-select: none;
+}
+.folder-header:hover {
+  background: var(--bg-secondary);
+}
+
+.folder-chevron {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.2s ease;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.folder-item.open .folder-chevron {
+  transform: rotate(90deg);
+}
+
+.folder-children {
+  list-style: none;
+  padding-left: 1.25rem;
+  margin-top: 0.25rem;
+  display: none;
+}
+
+.folder-item.open .folder-children {
+  display: block;
 }
 
 .explorer-link {
-  color: var(--text-dark);
+  color: var(--text-muted);
   text-decoration: none;
-  font-size: 0.98rem;
+  font-size: 0.92rem;
   display: block;
-  padding: 0.35rem 0.6rem;
-  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
   transition: background 0.15s ease, color 0.15s ease;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .explorer-link:hover, .explorer-link.active {
@@ -150,13 +260,18 @@ body {
   color: var(--link);
 }
 
-/* Center Content - Expanded Width & Larger Text */
+/* Center Content - High Readability Layout */
 .center {
   flex: 1;
   padding: 3rem 4rem;
-  max-width: 1280px;
-  width: 100%;
+  margin-left: 320px;
+  margin-right: 300px;
+  max-width: 1050px;
+  transition: margin 0.3s ease;
 }
+
+body.left-collapsed .center { margin-left: 40px; }
+body.right-collapsed .center { margin-right: 40px; }
 
 .page-header {
   margin-bottom: 2.25rem;
@@ -191,7 +306,7 @@ body {
   color: var(--text-muted);
 }
 
-/* Markdown Content Elements - High Readability */
+/* Markdown Content Formatting */
 .markdown-preview-view {
   font-size: 1.15rem;
   line-height: 1.85;
@@ -269,6 +384,49 @@ code {
   padding: 0.2rem 0.45rem;
   border-radius: 4px;
   font-size: 0.95rem;
+}
+
+/* Right Sidebar Widgets */
+.right.sidebar h2, .right.sidebar h3 {
+  font-family: "Schibsted Grotesk", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.graph-widget {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+#mini-graph-canvas {
+  width: 100%;
+  height: 160px;
+  display: block;
+}
+
+.toc-list, .backlinks-list {
+  list-style: none;
+}
+
+.toc-item, .backlink-item {
+  margin-bottom: 0.4rem;
+}
+
+.toc-link, .backlink-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: block;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+.toc-link:hover, .backlink-link:hover {
+  color: var(--link);
 }
 
 /* Search Modal Overlay */

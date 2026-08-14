@@ -7,7 +7,7 @@
   <meta name="og:site_name" content="Qashu"/>
   <meta property="og:title" content="Qashu"/>
   <meta property="og:type" content="website"/>
-  <meta name="description" content="Qashu - Map of Content for a self-directed quantum computing curriculum."/>
+  <meta name="description" content="Qashu - Self-directed Quantum Reference Knowledge Base"/>
 
   <!-- Fonts & KaTeX -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;600&display=swap"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous"/>
 
-  <!-- Quartz Theme Stylesheet -->
+  <!-- Qashu Quartz Theme Stylesheet -->
   <link rel="stylesheet" href="./style.css"/>
 </head>
 <body data-slug="qashu-index">
@@ -23,9 +23,17 @@
   <div id="quartz-root" class="page">
     <div id="quartz-body">
 
-      <!-- Left Sidebar -->
-      <aside class="left sidebar">
-        <h2 class="page-title"><a href="#" id="home-logo-link">Qashu</a></h2>
+      <!-- Left Sidebar Hover Reveal Edge Trigger Zone -->
+      <div id="left-hover-zone" class="hover-zone left-zone"></div>
+
+      <!-- Left Sidebar Panel -->
+      <aside class="left sidebar" id="left-sidebar">
+        <div class="sidebar-header">
+          <h2 class="page-title"><a href="#" id="home-logo-link">Qashu</a></h2>
+          <button id="pin-left-sidebar" class="btn-pin" title="Pin / Unpin Left Sidebar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v10m0 0l4-4m-4 4L8 8m-4 14h16"/></svg>
+          </button>
+        </div>
         
         <div class="sidebar-controls">
           <!-- Search Button -->
@@ -44,20 +52,20 @@
 
           <!-- Darkmode Toggle -->
           <button class="darkmode" id="btn-darkmode" aria-label="Toggle theme">
-            <svg xmlns="http://www.w3.org/2000/svg" class="dayIcon" viewBox="0 0 35 35" width="18" height="18" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="dayIcon" viewBox="0 0 35 35" width="16" height="16" fill="currentColor">
               <path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M17.5,6C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path>
             </svg>
           </button>
         </div>
 
-        <!-- Explorer Folder Tree -->
+        <!-- Explorer Category Folder Tree -->
         <div class="explorer">
-          <button type="button" class="title-button explorer-toggle" aria-expanded="true">
+          <div class="explorer-title-row">
             <h2>Explorer</h2>
-          </button>
+          </div>
           <div class="explorer-content">
-            <ul class="explorer-ul" id="explorer-list">
-              <!-- Dynamically populated note tree -->
+            <ul class="explorer-folder-tree" id="explorer-tree">
+              <!-- Dynamically populated category folders -->
             </ul>
           </div>
         </div>
@@ -81,6 +89,40 @@
         </article>
       </main>
 
+      <!-- Right Sidebar Hover Reveal Edge Trigger Zone -->
+      <div id="right-hover-zone" class="hover-zone right-zone"></div>
+
+      <!-- Right Sidebar Panel -->
+      <aside class="right sidebar" id="right-sidebar">
+        <div class="sidebar-header">
+          <h2>Graph View</h2>
+          <button id="pin-right-sidebar" class="btn-pin" title="Pin / Unpin Right Sidebar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v10m0 0l4-4m-4 4L8 8m-4 14h16"/></svg>
+          </button>
+        </div>
+
+        <!-- Mini Interactive Canvas Graph Widget -->
+        <div class="graph-widget">
+          <canvas id="mini-graph-canvas" width="260" height="180"></canvas>
+        </div>
+
+        <!-- Table of Contents Section -->
+        <div class="toc-widget">
+          <h3>Table of Contents</h3>
+          <ul id="toc-list" class="toc-list">
+            <!-- Populated by app.js -->
+          </ul>
+        </div>
+
+        <!-- Backlinks Section -->
+        <div class="backlinks-widget">
+          <h3>Backlinks</h3>
+          <ul id="backlinks-list" class="backlinks-list">
+            <!-- Populated by app.js -->
+          </ul>
+        </div>
+      </aside>
+
     </div>
   </div>
 
@@ -88,7 +130,7 @@
   <div id="search-modal" class="search-modal" style="display: none;">
     <div class="search-backdrop"></div>
     <div class="search-modal-box">
-      <input type="text" id="modal-search-input" class="search-modal-input" placeholder="Search Qashu vault notes..." autofocus/>
+      <input type="text" id="modal-search-input" class="search-modal-input" placeholder="Search Qashu reference notes..." autofocus/>
       <div id="search-results-list" class="search-results-list"></div>
     </div>
   </div>

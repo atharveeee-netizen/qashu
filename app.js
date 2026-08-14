@@ -4,14 +4,18 @@ class QashuVaultApp {
   constructor() {
     this.currentTheme = localStorage.getItem('qashu_theme') || 'dark';
     this.currentNoteSlug = 'qashu-index';
+    this.leftPinned = true;
+    this.rightPinned = true;
     this.init();
   }
 
   init() {
     this.applyTheme(this.currentTheme);
-    this.renderExplorer();
+    this.renderCategoryExplorer();
     this.setupRouter();
     this.setupEventListeners();
+    this.setupSidebars();
+    this.initMiniGraph();
     this.loadNoteFromHash();
   }
 
@@ -33,17 +37,55 @@ class QashuVaultApp {
     this.renderNote(note);
   }
 
-  renderExplorer() {
-    const listEl = document.getElementById('explorer-list');
-    if (!listEl) return;
+  renderCategoryExplorer() {
+    const treeEl = document.getElementById('explorer-tree');
+    if (!treeEl) return;
 
-    listEl.innerHTML = VAULT_NOTES.map(note => `
-      <li class="explorer-item">
-        <a href="#note/${note.slug}" class="explorer-link ${note.slug === this.currentNoteSlug ? 'active' : ''}" data-slug="${note.slug}">
-          ${note.title}
-        </a>
-      </li>
-    `).join('');
+    // Group notes by category folder
+    const categories = {};
+    VAULT_NOTES.forEach(note => {
+      let cat = note.category || 'Map of Content';
+      if (note.slug === 'qashu-index') cat = 'Map of Content';
+      if (!categories[cat]) categories[cat] = [];
+      categories[cat].push(note);
+    });
+
+    const catKeys = Object.keys(categories).sort((a, b) => {
+      if (a === 'Map of Content') return -1;
+      if (b === 'Map of Content') return 1;
+      return a.localeCompare(b);
+    });
+
+    treeEl.innerHTML = catKeys.map((cat, idx) => {
+      const notes = categories[cat];
+      const isOpen = idx === 0 || cat === 'Absolute Basics'; // First category open by default
+
+      return `
+        <li class="folder-item ${isOpen ? 'open' : ''}">
+          <div class="folder-header" data-cat="${cat}">
+            <svg class="folder-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span>${cat}</span>
+          </div>
+          <ul class="folder-children">
+            ${notes.map(n => `
+              <li>
+                <a href="#note/${n.slug}" class="explorer-link ${n.slug === this.currentNoteSlug ? 'active' : ''}" data-slug="${n.slug}">
+                  ${n.title}
+                </a>
+              </li>
+            `).join('')}
+          </ul>
+        </li>
+      `;
+    }).join('');
+
+    // Add folder click expand/collapse listener
+    document.querySelectorAll('.folder-header').forEach(hdr => {
+      hdr.addEventListener('click', () => {
+        const item = hdr.closest('.folder-item');
+        item.classList.toggle('open');
+      });
+    });
   }
 
   renderNote(note) {
@@ -67,13 +109,131 @@ class QashuVaultApp {
     document.querySelectorAll('.explorer-link').forEach(el => {
       if (el.dataset.slug === note.slug) {
         el.classList.add('active');
+        // Ensure parent folder is expanded
+        const parentFolder = el.closest('.folder-item');
+        if (parentFolder) parentFolder.classList.add('open');
       } else {
         el.classList.remove('active');
       }
     });
 
+    this.renderTableOfContents();
+    this.renderBacklinks(note);
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
     this.renderKaTeX();
+  }
+
+  renderTableOfContents() {
+    const tocEl = document.getElementById('toc-list');
+    const content = document.getElementById('markdown-content');
+    if (!tocEl || !content) return;
+
+    const headings = content.querySelectorAll('h1, h2, h3');
+    if (headings.length === 0) {
+      tocEl.innerHTML = '<li class="toc-item"><span class="toc-link">Overview</span></li>';
+      return;
+    }
+
+    tocEl.innerHTML = Array.from(headings).map((h, i) => {
+      const id = `heading-${i}`;
+      h.id = id;
+      return `
+        <li class="toc-item" style="padding-left: ${h.tagName === 'H3' ? '0.75rem' : '0'};">
+          <a href="#${id}" class="toc-link">${h.innerText}</a>
+        </li>
+      `;
+    }).join('');
+  }
+
+  renderBacklinks(currentNote) {
+    const backlinksEl = document.getElementById('backlinks-list');
+    if (!backlinksEl) return;
+
+    // Find notes that link to current Note slug or title
+    const references = VAULT_NOTES.filter(n => 
+      n.slug !== currentNote.slug && 
+      (n.content.includes(currentNote.slug) || n.content.includes(currentNote.title))
+    );
+
+    if (references.length === 0) {
+      backlinksEl.innerHTML = '<li class="backlink-item"><span class="toc-link">No backlinks found</span></li>';
+      return;
+    }
+
+    backlinksEl.innerHTML = references.slice(0, 5).map(r => `
+      <li class="backlink-item">
+        <a href="#note/${r.slug}" class="backlink-link">${r.title}</a>
+      </li>
+    `).join('');
+  }
+
+  setupSidebars() {
+    const leftSb = document.getElementById('left-sidebar');
+    const rightSb = document.getElementById('right-sidebar');
+    const pinLeftBtn = document.getElementById('pin-left-sidebar');
+    const pinRightBtn = document.getElementById('pin-right-sidebar');
+
+    if (pinLeftBtn && leftSb) {
+      pinLeftBtn.addEventListener('click', () => {
+        this.leftPinned = !this.leftPinned;
+        leftSb.classList.toggle('collapsed', !this.leftPinned);
+        document.body.classList.toggle('left-collapsed', !this.leftPinned);
+      });
+    }
+
+    if (pinRightBtn && rightSb) {
+      pinRightBtn.addEventListener('click', () => {
+        this.rightPinned = !this.rightPinned;
+        rightSb.classList.toggle('collapsed', !this.rightPinned);
+        document.body.classList.toggle('right-collapsed', !this.rightPinned);
+      });
+    }
+  }
+
+  initMiniGraph() {
+    const canvas = document.getElementById('mini-graph-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = 260;
+    let height = canvas.height = 160;
+
+    // Simple node graph visualization
+    const nodes = VAULT_NOTES.slice(0, 15).map((n, i) => ({
+      x: 30 + Math.random() * (width - 60),
+      y: 20 + Math.random() * (height - 40),
+      radius: i === 0 ? 6 : 3,
+      isMain: i === 0
+    }));
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw edges
+      ctx.strokeStyle = 'rgba(138, 180, 248, 0.15)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          if (Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y) < 70) {
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw nodes
+      nodes.forEach(n => {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+        ctx.fillStyle = n.isMain ? '#8ab4f8' : '#a1a1aa';
+        ctx.fill();
+      });
+    };
+
+    draw();
   }
 
   setupEventListeners() {
