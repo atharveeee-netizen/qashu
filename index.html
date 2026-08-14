@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qashu — Quantum Computing Study Roadmap & Reference</title>
+  <meta name="description" content="Qashu: A designer-grade self-directed quantum computing curriculum reference site featuring runnable Qiskit circuit examples, concept graphs, and structured study paths.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation (Vignelli Grid Style) -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-logo">
+          <div class="brand-symbol"></div>
+          <div>
+            <h1 class="brand-title">Qashu</h1>
+            <div class="brand-tagline">Quantum Study Roadmap</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav-scroll">
+        <ul id="nav-sections-list" class="nav-sections-list">
+          <!-- Dynamically populated sections -->
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content View -->
+    <main class="main-content">
+
+      <!-- Hero Landing Visual (Da Vinci / Zaha Hadid Wave Aesthetic) -->
+      <header class="hero-section">
+        <div class="hero-content">
+          <span class="hero-badge">Self-Directed Quantum Curriculum</span>
+          <h1 class="hero-title">Qashu Quantum Roadmap</h1>
+          <p class="hero-subtitle">Master quantum computing from foundational qubit linear algebra to hardware noise mitigation and Qiskit 1.x algorithms.</p>
+          
+          <!-- Search Bar -->
+          <div class="search-wrapper">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="search-input" class="search-input" placeholder="Search 16 curriculum sections, Qiskit code, or algorithms..." aria-label="Search curriculum">
+          </div>
+        </div>
+      </header>
+
+      <!-- View Switcher Toolbar -->
+      <div class="toolbar-section">
+        <div class="view-toggle">
+          <button id="btn-view-grid" class="btn-toggle active">Curriculum Grid</button>
+          <button id="btn-view-graph" class="btn-toggle">Concept Graph View</button>
+        </div>
+      </div>
+
+      <!-- Suggested Study Order Tracker -->
+      <section class="study-progress-card">
+        <div class="progress-header">
+          <h3 class="progress-title">Suggested Study Order (19-Step Guided Path)</h3>
+          <span id="study-progress-text" class="progress-stats">0 of 19 Steps Completed (0%)</span>
+        </div>
+        <div class="progress-track">
+          <div id="study-progress-fill" class="progress-fill"></div>
+        </div>
+        <div id="study-order-container" class="study-order-grid">
+          <!-- Populated by app.js -->
+        </div>
+      </section>
+
+      <!-- Grid View Content Container -->
+      <div id="grid-view-content">
+        <div id="sections-container">
+          <!-- 16 Curriculum Sections rendered dynamically -->
+        </div>
+
+        <!-- Open Threads / Roadmap-in-progress -->
+        <section class="curriculum-section">
+          <div class="section-header">
+            <h2>Open Threads & Research Roadmap</h2>
+            <p class="section-desc">Active quantum computing research topics and ongoing curriculum extensions.</p>
+          </div>
+          <div id="open-threads-container" class="open-threads-grid">
+            <!-- Populated by app.js -->
+          </div>
+        </section>
+      </div>
+
+      <!-- Concept Graph View Container -->
+      <div id="graph-view-content" style="display: none;">
+        <section class="graph-container">
+          <h2>Interactive Quantum Concept Map</h2>
+          <p class="section-desc" style="margin-bottom: 20px;">Click any topic node to jump directly to its curriculum notes and Qiskit code.</p>
+          <canvas id="concept-graph-canvas"></canvas>
+        </section>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Application Script Module -->
+  <script type="module" src="./app.js"></script>
+
+</body>
+</html>
