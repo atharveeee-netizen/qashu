@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { VaultNote } from '@/lib/data';
 
 interface NoteViewerProps {
@@ -9,34 +9,12 @@ interface NoteViewerProps {
 }
 
 export const NoteViewer: React.FC<NoteViewerProps> = ({ note, onSelectNote }) => {
-  const contentRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
-  // KaTeX rendering hook
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).katex && contentRef.current) {
-      const katex = (window as any).katex;
-      let html = contentRef.current.innerHTML;
+    setMounted(true);
+  }, []);
 
-      html = html.replace(/\$\$(.*?)\$\$/g, (_, eq) => {
-        try {
-          return katex.renderToString(eq, { displayMode: true });
-        } catch (e) {
-          return eq;
-        }
-      });
-      html = html.replace(/\$(.*?)\$/g, (_, eq) => {
-        try {
-          return katex.renderToString(eq, { displayMode: false });
-        } catch (e) {
-          return eq;
-        }
-      });
-
-      contentRef.current.innerHTML = html;
-    }
-  }, [note]);
-
-  // Markdown parser
   const renderMarkdown = (text: string) => {
     if (!text) return '';
 
@@ -84,6 +62,10 @@ export const NoteViewer: React.FC<NoteViewerProps> = ({ note, onSelectNote }) =>
     return finalHtml;
   };
 
+  if (!mounted) {
+    return <div className="p-8 text-zinc-400">Loading Qashu note...</div>;
+  }
+
   return (
     <main className="center-content">
       <div className="mb-6 border-b border-zinc-800 pb-4">
@@ -105,7 +87,6 @@ export const NoteViewer: React.FC<NoteViewerProps> = ({ note, onSelectNote }) =>
       </div>
 
       <div
-        ref={contentRef}
         className="markdown-content text-zinc-200 text-lg leading-relaxed space-y-4"
         dangerouslySetInnerHTML={{ __html: renderMarkdown(note.content) }}
       />
