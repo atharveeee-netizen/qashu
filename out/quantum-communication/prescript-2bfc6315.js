@@ -35,6 +35,27 @@
     document.dispatchEvent(new CustomEvent("readermodechange", { detail: { mode: next ? "on" : "off" } }));
   }
 
+  // Toggle Explorer Collapse / Expand
+  function toggleExplorer(targetEl) {
+    var explorerBlock = targetEl.closest(".explorer");
+    if (!explorerBlock) return;
+
+    var isCollapsed = explorerBlock.classList.contains("collapsed");
+    explorerBlock.classList.toggle("collapsed", !isCollapsed);
+
+    var content = explorerBlock.querySelector(".explorer-content") || explorerBlock.querySelector("#explorer-3") || explorerBlock.querySelector(".content");
+    if (content) {
+      content.classList.toggle("collapsed", !isCollapsed);
+      content.setAttribute("aria-expanded", isCollapsed ? "true" : "false");
+      content.style.display = isCollapsed ? "block" : "none";
+    }
+
+    var toggleBtn = explorerBlock.querySelector(".explorer-toggle") || explorerBlock.querySelector(".title-button");
+    if (toggleBtn) {
+      toggleBtn.setAttribute("aria-expanded", isCollapsed ? "true" : "false");
+    }
+  }
+
   // Global Event Listener for Dark Mode, Reader Mode & Explorer Toggles
   document.addEventListener("click", function(e) {
     // Dark mode toggle button
@@ -53,34 +74,29 @@
       return;
     }
 
-    // Explorer Title Header Toggle (Collapse / Expand Explorer)
-    var explorerTitle = e.target.closest(".explorer-title");
-    if (explorerTitle) {
+    // Explorer Toggle Header Button ("Explorer v" button or title)
+    var explorerToggleBtn = e.target.closest(".explorer-toggle") || e.target.closest(".title-button") || e.target.closest(".explorer-title") || e.target.closest("h2");
+    if (explorerToggleBtn && explorerToggleBtn.closest(".explorer")) {
       e.preventDefault();
-      var explorerBlock = e.target.closest(".explorer");
-      if (explorerBlock) {
-        explorerBlock.classList.toggle("collapsed");
-        var content = explorerBlock.querySelector(".explorer-content") || explorerBlock.querySelector(".content");
-        if (content) {
-          content.classList.toggle("collapsed");
-          if (content.style.display === "none") {
-            content.style.display = "";
-          } else {
-            content.style.display = content.classList.contains("collapsed") ? "none" : "";
-          }
-        }
-      }
+      toggleExplorer(explorerToggleBtn);
       return;
     }
 
     // Folder Items inside Explorer (Expand / Collapse Folders)
-    var folderBtn = e.target.closest(".folder-button") || e.target.closest(".folder-title") || e.target.closest(".folder-icon");
+    var folderBtn = e.target.closest(".folder-button") || e.target.closest(".folder-title") || e.target.closest(".folder-icon") || e.target.closest(".folder-container");
     if (folderBtn) {
-      var folderOuter = folderBtn.closest(".folder-outer");
-      var folderContainer = folderOuter ? folderOuter.querySelector(".folder-container") : folderBtn.nextElementSibling;
-      if (folderContainer) {
-        folderContainer.classList.toggle("open");
-        folderContainer.classList.toggle("collapsed");
+      var folderLi = folderBtn.closest("li");
+      if (folderLi) {
+        var folderOuter = folderLi.querySelector(".folder-outer");
+        var folderContainer = folderLi.querySelector(".folder-container");
+        if (folderContainer) {
+          folderContainer.classList.toggle("open");
+        }
+        if (folderOuter) {
+          var isHidden = folderOuter.style.display === "none" || folderOuter.classList.contains("collapsed");
+          folderOuter.style.display = isHidden ? "block" : "none";
+          folderOuter.classList.toggle("collapsed", !isHidden);
+        }
       }
     }
   });
