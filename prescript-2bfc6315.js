@@ -1,1 +1,96 @@
-(function(){var n=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark",c=localStorage.getItem("theme")??n;document.documentElement.setAttribute("saved-theme",c);var m=o=>{document.body?.classList.remove("theme-dark","theme-light"),document.body?.classList.add(`theme-${o}`)},d=o=>{let a=new CustomEvent("themechange",{detail:{theme:o}});document.dispatchEvent(a)},e=()=>{let o=document.documentElement.getAttribute("saved-theme")??"light";m(o);let a=()=>{let t=document.documentElement.getAttribute("saved-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("saved-theme",t),localStorage.setItem("theme",t),m(t),d(t)},l=t=>{let r=t.matches?"dark":"light";document.documentElement.setAttribute("saved-theme",r),localStorage.setItem("theme",r),m(r),d(r)};for(let t of document.getElementsByClassName("darkmode"))t.addEventListener("click",a),window.addCleanup(()=>t.removeEventListener("click",a));let s=window.matchMedia("(prefers-color-scheme: dark)");s.addEventListener("change",l),window.addCleanup(()=>s.removeEventListener("change",l))};document.addEventListener("nav",e),document.addEventListener("render",e)})(),(function(){var n=!1,c=d=>{let e=new CustomEvent("readermodechange",{detail:{mode:d}});document.dispatchEvent(e)},m=()=>{let d=()=>{n=!n;let e=n?"on":"off";document.documentElement.setAttribute("reader-mode",e),c(e)};for(let e of document.getElementsByClassName("readermode"))e.addEventListener("click",d),window.addCleanup(()=>e.removeEventListener("click",d));document.documentElement.setAttribute("reader-mode",n?"on":"off")};document.addEventListener("nav",m),document.addEventListener("render",m)})();
+// Qashu Core Client Controller: Explorer Toggle, Search, Dark Mode, Reader Mode
+(function() {
+  function initTheme() {
+    var savedTheme = localStorage.getItem("theme");
+    var theme = savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("saved-theme", theme);
+  }
+  initTheme();
+
+  document.addEventListener("DOMContentLoaded", function() {
+    // 1. Dark Mode Toggle
+    var darkBtns = document.querySelectorAll(".darkmode");
+    darkBtns.forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        var current = document.documentElement.getAttribute("saved-theme");
+        var next = current === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("saved-theme", next);
+        localStorage.setItem("theme", next);
+      });
+    });
+
+    // 2. Reader Mode Toggle
+    var readerBtns = document.querySelectorAll(".readermode");
+    readerBtns.forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        document.body.classList.toggle("reader-mode");
+      });
+    });
+
+    // 3. Explorer Sidebar Toggle (Desktop & Mobile)
+    function setupExplorer() {
+      var explorerContainers = document.querySelectorAll(".explorer.nav-files-container");
+      var toggleButtons = document.querySelectorAll(".explorer-toggle, .title-button, button.desktop-explorer, button.mobile-explorer");
+      
+      toggleButtons.forEach(function(btn) {
+        btn.addEventListener("click", function(e) {
+          e.preventDefault();
+          explorerContainers.forEach(function(c) {
+            c.classList.toggle("collapsed");
+            var isCollapsed = c.classList.contains("collapsed");
+            btn.setAttribute("aria-expanded", isCollapsed ? "false" : "true");
+            var content = c.querySelector(".explorer-content");
+            if (content) {
+              content.setAttribute("aria-expanded", isCollapsed ? "false" : "true");
+              content.style.display = isCollapsed ? "none" : "block";
+            }
+          });
+        });
+      });
+
+      // Folder Collapse / Expand
+      document.addEventListener("click", function(e) {
+        var folderBtn = e.target.closest(".folder-button, .folder-container");
+        if (folderBtn) {
+          var folderOuter = folderBtn.closest("li").querySelector(".folder-outer");
+          var icon = folderBtn.querySelector(".folder-icon");
+          if (folderOuter) {
+            folderOuter.classList.toggle("open");
+            if (icon) icon.classList.toggle("open");
+          }
+        }
+      });
+    }
+    setupExplorer();
+
+    // 4. Search Modal Toggle
+    var searchBtns = document.querySelectorAll(".search-button");
+    var searchContainer = document.querySelector(".search-container");
+    var searchBar = document.querySelector(".search-bar");
+
+    if (searchBtns.length && searchContainer) {
+      searchBtns.forEach(function(btn) {
+        btn.addEventListener("click", function(e) {
+          e.preventDefault();
+          searchContainer.classList.toggle("active");
+          if (searchContainer.classList.contains("active") && searchBar) {
+            searchBar.focus();
+          }
+        });
+      });
+
+      document.addEventListener("keydown", function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+          e.preventDefault();
+          searchContainer.classList.toggle("active");
+          if (searchContainer.classList.contains("active") && searchBar) {
+            searchBar.focus();
+          }
+        }
+        if (e.key === "Escape" && searchContainer.classList.contains("active")) {
+          searchContainer.classList.remove("active");
+        }
+      });
+    }
+  });
+})();
